@@ -34,7 +34,7 @@ function Roots(){
             <h1 style={{cursor: "pointer"}} onClick={function(){
                 fetch("http://localhost:5000/logout", {
                     method: "get",
-                    credentials: "include"
+                    
                 })
                 .then(function(){
                     setUser(null);

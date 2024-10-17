@@ -19,14 +19,17 @@ module.exports = function(){
     },
     function(accessToken, refreshToken, profile, done){
         let email = profile.emails[0].value;
-        db.query("SELECT EXISTS (SELECT * FROM googles WHERE email=? limit 1) AS success", [email], function(error, result){
-            if(result[0].success){
-                done(null, email);
-            }
-            else{
-                done(null, false);
-            }
-        })
+        try{
+            db.query("SELECT EXISTS (SELECT * FROM googles WHERE email=? limit 1) AS success", [email], function(error, result){
+                if(result[0].success == 0){
+                    db.query("INSERT INTO googles (email) VALUES (?)", [email]);
+                }
+                done(null, email)
+            })
+        }
+        catch(e){
+            done(null, false);
+        }
     }
     ))
 
